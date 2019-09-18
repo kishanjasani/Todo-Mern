@@ -4,9 +4,9 @@ import {Link} from 'react-router-dom';
 
 const Todo = ( props ) => (
   <tr>
-    <td>{props.todo.todo_description}</td>
-    <td>{props.todo.todo_responsible}</td>
-    <td>{props.todo.todo_priority}</td>
+    <td className={props.todo.todo_completed ? 'completed' : ''}>{props.todo.todo_description}</td>
+    <td className={props.todo.todo_completed ? 'completed' : ''}>{props.todo.todo_responsible}</td>
+    <td className={props.todo.todo_completed ? 'completed' : ''}>{props.todo.todo_priority}</td>
     <td>
       <Link to={`/edit/${props.todo._id}`}>Edit</Link>
     </td>
@@ -23,6 +23,16 @@ class TodosList extends Component {
   }
 
   componentDidMount = () => {
+    axios.get('http://127.0.0.1:2001/todos/')
+         .then(res => {
+           this.setState({todos: res.data});
+         })
+         .catch(err => {
+            console.log(err);
+         });
+  }
+
+  componentDidUpdate = () => {
     axios.get('http://127.0.0.1:2001/todos/')
          .then(res => {
            this.setState({todos: res.data});
